@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 2.8)
 project (tensor)
 #    CMake Scripts dir
 set(CMAKE_SCRIPT_DIR ${CMAKE_SOURCE_DIR}/CMakeScripts)
@@ -13,7 +13,8 @@ find_package (CUDA REQUIRED)
 include_directories (${CUDA_INCLUDE_DIRS})
 MESSAGE("${CUDA_INCLUDE_DIRS}/../samples/common/inc")
 include_directories ("${CUDA_INCLUDE_DIRS}/../samples/common/inc")
-include_directories ("${PROJECT_SOURCE_DIR}/inc/")
+include_directories ("${PROJECT_SOURCE_DIR}/common/")
+include_directories ("${PROJECT_SOURCE_DIR}/tensor/")
 set(CUDA_SEPARABLE_COMPILATION ON)
 
 # opencv
@@ -50,8 +51,8 @@ find_package (Glog REQUIRED)
 
 
 file(GLOB CUDA_CNN_CU_SOURCES  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
-    "inc/*"
-    "src/*")
+    "common/*"
+    "tensor/*")
 
 cuda_add_executable(tensor ${CUDA_CNN_CU_SOURCES})
 #cuda_add_library(CUDA-CNN STATIC ${CUDA_CNN_CPP_SOURCES})
