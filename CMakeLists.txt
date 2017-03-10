@@ -17,16 +17,8 @@ include_directories ("${PROJECT_SOURCE_DIR}/common/")
 include_directories ("${PROJECT_SOURCE_DIR}/tensor/")
 set(CUDA_SEPARABLE_COMPILATION ON)
 
-# opencv
-# find_package( OpenCV REQUIRED )
-# INCLUDE_DIRECTORIES( ${OPENCV_INCLUDE_DIR} )
-# set(OpenCV_LIBRARIES ${OpenCV_LIBS})
-
-
 include_directories(${PROJECT_SOURCE_DIR})
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -g -rdynamic")
 
 set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}
   -gencode arch=compute_20,code=sm_20
@@ -43,19 +35,15 @@ set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}
 
 MESSAGE(${CUDA_NVCC_FLAGS})
 
-#add_library(${EXAMPLE_NAME}.o OBJECT ${source})
-#set(EXAMPLE_OBJ_LIB $<TARGET_OBJECTS:${EXAMPLE_NAME}.o>)
 include("./CMakeScripts/FindGlog.cmake")
 find_package (Glog REQUIRED)
-
-
 
 file(GLOB CUDA_CNN_CU_SOURCES  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
     "common/*"
     "tensor/*")
 
-cuda_add_executable(tensor ${CUDA_CNN_CU_SOURCES})
-#cuda_add_library(CUDA-CNN STATIC ${CUDA_CNN_CPP_SOURCES})
+#cuda_add_executable(tensor ${CUDA_CNN_CU_SOURCES})
+cuda_add_library(tensor STATIC ${CUDA_CNN_CU_SOURCES})
 target_link_libraries(tensor
     #  ${OpenCV_LIBRARIES}
   ${CUDA_CUBLAS_LIBRARIES}
@@ -64,5 +52,5 @@ target_link_libraries(tensor
   glog
   )
 CUDA_ADD_CUBLAS_TO_TARGET(tensor)
-
-#add_subdirectory(net)
+add_subdirectory(gtest)
+add_subdirectory(tests)
